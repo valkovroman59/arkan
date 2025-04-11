@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Психологический Портрет</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ffe5ec, #e0c3fc);
+      text-align: center;
+      padding: 50px;
+      color: #2c003e;
+    }
+    .container {
+      background: #ffffffcc;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    input[type="date"] {
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      width: 80%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #8e44ad;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #732d91;
+    }
+    #result {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .description {
+      margin-top: 10px;
+      font-size: 16px;
+      font-style: italic;
+    }
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+      color: #555;
+    }
+    a {
+      color: #6a329f;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Узнай свой Аркан</h1>
+    <p>Введи дату рождения и получи архетип твоего жизненного пути:</p>
+    <input type="date" id="birthdate">
+    <br>
+    <button onclick="calculateArkan()">Рассчитать</button>
+    <div id="result"></div>
+    <div class="description" id="description"></div>
+    <img id="arkanImage" style="margin-top:20px; max-width: 100%; display: none;">
+  </div>
+  <footer>
+    Проект Романа | <a href="https://t.me/roman_tarot" target="_blank">@roman_tarot</a>
+  </footer>
+  <script>
+    const arcanes = [
+      '',
+      'Маг', 'Жрица', 'Императрица', 'Император', 'Иерофант', 'Влюблённые', 'Колесница',
+      'Справедливость', 'Отшельник', 'Колесо Фортуны', 'Сила', 'Повешенный', 'Смерть',
+      'Умеренность', 'Дьявол', 'Башня', 'Звезда', 'Луна', 'Солнце', 'Страшный Суд', 'Мир', 'Шут'
+    ];
+
+    const meanings = [
+      '',
+      'Маг — энергия творчества, действия, реализации.',
+      'Жрица — интуиция, тайны, внутренняя мудрость.',
+      'Императрица — плодородие, забота, красота и изобилие.',
+      'Император — структура, контроль, ответственность.',
+      'Иерофант — традиции, духовный наставник, обучение.',
+      'Влюблённые — выбор, любовь, партнёрство.',
+      'Колесница — победа, движение вперёд, сила воли.',
+      'Справедливость — карма, честность, равновесие.',
+      'Отшельник — одиночество, поиск истины, внутренний путь.',
+      'Колесо Фортуны — перемены, судьба, циклы жизни.',
+      'Сила — внутренняя мощь, терпение, сострадание.',
+      'Повешенный — жертва, переоценка, духовное пробуждение.',
+      'Смерть — трансформация, завершение, новый этап.',
+      'Умеренность — гармония, баланс, исцеление.',
+      'Дьявол — искушения, материальность, зависимость.',
+      'Башня — крах иллюзий, внезапные перемены.',
+      'Звезда — надежда, вдохновение, исцеление.',
+      'Луна — иллюзии, эмоции, подсознание.',
+      'Солнце — радость, успех, жизненная сила.',
+      'Страшный Суд — пробуждение, очищение, перерождение.',
+      'Мир — завершение, целостность, единство.',
+      'Шут — начало пути, свобода, приключение.'
+    ];
+
+    function calculateArkan() {
+      const date = document.getElementById('birthdate').value;
+      if (!date) {
+        document.getElementById('result').innerText = 'Пожалуйста, введите дату.';
+        return;
+      }
+      const digits = date.replaceAll('-', '').split('').map(Number);
+      let sum = digits.reduce((a, b) => a + b, 0);
+      while (sum > 22) {
+        sum = sum.toString().split('').reduce((a, b) => a + Number(b), 0);
+      }
+      const arkanName = arcanes[sum];
+      const meaning = meanings[sum];
+      document.getElementById('result').innerText = `Ваш Аркан: ${arkanName} (${sum})`;
+      document.getElementById('description').innerText = meaning;
+      const img = document.getElementById('arkanImage');
+      img.src = `https://upload.wikimedia.org/wikipedia/commons/thumb/${String(sum).padStart(2, '0')}/Tarot_${String(sum).padStart(2, '0')}.jpg/400px-Tarot_${String(sum).padStart(2, '0')}.jpg`;
+      img.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
