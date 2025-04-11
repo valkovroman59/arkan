@@ -4,79 +4,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Аркан-Портрет 2.0</title>
+  <title>Архетипический портрет</title>
   <style>
     body {
-      font-family: 'Georgia', serif;
-      background: linear-gradient(135deg, #0d0d0d, #1c0a2d);
-      color: #f3f3f3;
-      text-align: center;
-      padding: 50px;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #1e1e2f, #3a2d5f);
+      color: #fff;
+      padding: 20px;
+      line-height: 1.6;
     }
     .container {
-      background: rgba(30, 30, 60, 0.85);
-      max-width: 800px;
+      max-width: 960px;
       margin: 0 auto;
+      background-color: rgba(20, 20, 30, 0.95);
       padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 32px;
+      color: #f8d678;
     }
     input[type="date"] {
-      padding: 12px;
+      padding: 10px;
       font-size: 16px;
-      margin-bottom: 20px;
-      width: 70%;
-      border-radius: 8px;
+      border-radius: 6px;
       border: none;
-      background: #222;
+      width: 60%;
+      background-color: #2e2e4d;
       color: #fff;
     }
     button {
-      padding: 12px 24px;
+      padding: 10px 20px;
       font-size: 16px;
-      background-color: #9932CC;
-      color: white;
+      margin-top: 10px;
+      background-color: #a77ff2;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
+      color: #fff;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #7a25aa;
-    }
-    .result-block {
-      margin-top: 30px;
     }
     .card {
-      margin-bottom: 20px;
+      margin-top: 30px;
+      background-color: #2a2a40;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
-    img {
-      max-width: 120px;
-      margin: 10px 0;
+    .card img {
+      max-width: 100px;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+    .card h2 {
+      margin: 0;
+      color: #f0c674;
     }
     footer {
+      text-align: center;
       margin-top: 40px;
       font-size: 14px;
-      color: #aaa;
-    }
-    a {
-      color: #cc99ff;
-      text-decoration: none;
+      color: #bbb;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🔮 Аркан-Портрет Личности 🔮</h1>
-    <p>Введи дату рождения:</p>
+    <h1>Архетипический Портрет</h1>
+    <p>Введите вашу дату рождения:</p>
     <input type="date" id="birthdate">
     <br>
-    <button onclick="calculateProfile()">Рассчитать</button>
-    <div class="result-block" id="results"></div>
+    <button onclick="generatePortrait()">Рассчитать портрет</button>
+    <div id="results"></div>
   </div>
   <footer>
-    Проект Романа | <a href="https://t.me/roman_tarot" target="_blank">@roman_tarot</a>
+    Проект Романа | <a href="https://t.me/roman_tarot" target="_blank" style="color:#b39ddb;">@roman_tarot</a>
   </footer>
+
   <script>
     const arcanes = [
       '', 'Маг', 'Жрица', 'Императрица', 'Император', 'Иерофант', 'Влюблённые', 'Колесница',
@@ -85,49 +93,51 @@
     ];
 
     const descriptions = [
-      '', 'Маг — энергия реализации и воли.', 'Жрица — тайна и интуиция.', 'Императрица — изобилие и забота.',
-      'Император — порядок и власть.', 'Иерофант — традиция и духовность.', 'Влюблённые — выбор и связь.',
-      'Колесница — движение и контроль.', 'Справедливость — честность и карма.', 'Отшельник — поиск себя.',
-      'Колесо Фортуны — перемены и судьба.', 'Сила — терпение и внутренняя мощь.',
-      'Повешенный — переоценка и жертва.', 'Смерть — трансформация.', 'Умеренность — баланс и исцеление.',
-      'Дьявол — искушения и материальность.', 'Башня — разрушение и освобождение.',
-      'Звезда — надежда и вдохновение.', 'Луна — эмоции и иллюзии.', 'Солнце — радость и успех.',
-      'Страшный Суд — пробуждение.', 'Мир — завершение и целостность.', 'Шут — начало и свобода.'
+      '', 'Потенциал творца и инициатора.', 'Интуиция и скрытые ресурсы.',
+      'Энергия созидания, плодородия и заботы.', 'Воля, структура и ответственность.',
+      'Поиск духовных основ и передачи знаний.', 'Гармония, выбор и сердечные связи.',
+      'Сила воли и движение к цели.', 'Чувство справедливости и баланс.', 'Мудрость одиночества и внутреннего света.',
+      'Потоки судьбы и цикличность.', 'Внутреннее величие и приручение инстинктов.',
+      'Остановка, взгляд с другой стороны.', 'Конец старого и начало нового.',
+      'Гармония душевного ритма.', 'Испытания искушениями и привязанностями.',
+      'Неожиданная перестройка и разрушение старого.', 'Вдохновение, исцеление, надежда.',
+      'Тонкие миры, сны, иллюзии.', 'Ясность, энергия, жизнелюбие.', 'Пробуждение и перерождение.',
+      'Полнота, завершение, выход на новый уровень.', 'Доверие жизни, начало нового цикла.'
     ];
 
-    function getArkanNumber(sum) {
-      while (sum > 22) {
-        sum = sum.toString().split('').reduce((a, b) => a + Number(b), 0);
+    function getArkan(num) {
+      while (num > 22) {
+        num = num.toString().split('').reduce((a, b) => a + Number(b), 0);
       }
-      return sum;
+      return num;
     }
 
-    function createCard(title, arkanNum) {
+    function createCard(position, arkanNumber) {
       return `
         <div class="card">
-          <h3>${title}: ${arcanes[arkanNum]} (${arkanNum})</h3>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/RWS_Tarot_${String(arkanNum).padStart(2, '0')}.jpg/300px-RWS_Tarot_${String(arkanNum).padStart(2, '0')}.jpg" alt="${arcanes[arkanNum]}">
-          <p>${descriptions[arkanNum]}</p>
-        </div>`;
+          <img src="https://raw.githubusercontent.com/hayeah/learning-tarot/main/cards/${arkanNumber.toString().padStart(2, '0')}.jpg" alt="Аркан ${arcanes[arkanNumber]}">
+          <div>
+            <h2>${position}: ${arcanes[arkanNumber]} (${arkanNumber})</h2>
+            <p>${descriptions[arkanNumber]}</p>
+          </div>
+        </div>
+      `;
     }
 
-    function calculateProfile() {
+    function generatePortrait() {
       const date = document.getElementById('birthdate').value;
       if (!date) return;
-
       const digits = date.replaceAll('-', '').split('').map(Number);
-      let sumTotal = digits.reduce((a, b) => a + b, 0);
-
-      const soul = getArkanNumber(sumTotal);
-      const shadow = getArkanNumber(soul * 2);
-      const child = getArkanNumber(digits[0] + digits[1]);
-      const karma = getArkanNumber(digits[digits.length - 2] + digits[digits.length - 1]);
-
-      document.getElementById('results').innerHTML =
-        createCard('Аркан Жизненного Пути', soul) +
-        createCard('Аркан Тени', shadow) +
-        createCard('Аркан Внутреннего Ребёнка', child) +
-        createCard('Аркан Кармы', karma);
+      const total = digits.reduce((a, b) => a + b, 0);
+      const positions = [
+        { name: 'Позиция 1', value: total },
+        { name: 'Позиция 2', value: total * 2 },
+        { name: 'Позиция 3', value: total + 7 },
+        { name: 'Позиция 4', value: digits[0] + digits[1] },
+        { name: 'Позиция 5', value: digits[2] + digits[3] },
+        { name: 'Позиция 6', value: digits[4] + digits[5] }
+      ];
+      document.getElementById('results').innerHTML = positions.map(pos => createCard(pos.name, getArkan(pos.value))).join('');
     }
   </script>
 </body>
